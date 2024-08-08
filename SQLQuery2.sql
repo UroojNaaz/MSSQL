@@ -86,3 +86,16 @@ SELECT @num3 AS "NUM*";
 
 SET @num3 /= 9;      -- Division
 SELECT @num3 AS "NUM/";
+
+
+---------------------------Conditional Operators------------------------------
+
+-- Declare and set age variable
+DECLARE @age INT;
+SET @age = 17;
+
+-- Check if the age is 18 or older
+IF (@age >= 18)
+    SELECT 'You can vote';
+ELSE
+    SELECT 'You can not vote';
