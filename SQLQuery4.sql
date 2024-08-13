@@ -133,3 +133,32 @@ WHERE department_id IN (SELECT department_id
                         FROM employees
                         WHERE first_name = 'David');
 
+-------------------------------------------------USE OF LIKE-----------------------------------------------
+--The LIKE operator in SQL is used to search for a specified pattern within a column. It is commonly used 
+--for partial matching in string values
+
+-- Selects all employees whose first name contains the letter 'a' anywhere in the name.
+SELECT *
+FROM employees
+WHERE first_name LIKE '%a%';
+
+-- Selects all employees whose first name ends with the letter 'a' and has exactly one character before 'a'.
+SELECT *
+FROM employees
+WHERE first_name LIKE '%a_';
+
+-- Selects all employees whose first name ends with the letter 'a' and has exactly two characters before 'a'.
+SELECT *
+FROM employees
+WHERE first_name LIKE '%a__';
+
+-- Selects all employees whose first name starts with any character followed by the letter 'a'.
+SELECT *
+FROM employees
+WHERE first_name LIKE '_%a';
+
+-- Selects all employees whose first name starts with any two characters followed by the letter 'a'.
+SELECT *
+FROM employees
+WHERE first_name LIKE '__%a';
+
