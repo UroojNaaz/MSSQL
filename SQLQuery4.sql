@@ -77,3 +77,59 @@ department_id,
 salary
 FROM employees
 WHERE salary BETWEEN 5000 AND 6000;
+
+
+------------------------------------------------USE OF IN------------------------------------------------
+
+--The IN SQL operator is used to filter records where a column's value matches any value within a specified list or set of values.
+--IN operator se aap ek column ko multiple values ke against filter kar sakte hain. Agar column ki value list mein se kisi bhi 
+--value se match hoti hai, toh woh record select ho jata hai.
+
+-- Selects all employees whose salary is one of the specified values: 5000, 1000, 2000, 3000, or 6000
+SELECT *
+FROM employees
+WHERE salary IN (5000, 1000, 2000, 3000, 6000);
+
+-- Selects all employees who report to one of the specified manager IDs: 105, 160, 150, or 120
+SELECT *
+FROM employees
+WHERE manager_id IN (105, 160, 150, 120);
+
+ ------------------------------------------SUB QUERY------------------------------------------------
+
+-- Selects all employees who have the same job_id as the employee with employee_id 160
+SELECT *
+FROM employees
+WHERE job_id = (SELECT job_id FROM employees WHERE employee_id = 160);
+
+--NOTE: Single Value Comparison: The = operator is used because the subquery is expected to return a single value. 
+--The = operator is suitable when you are comparing a column to a single value.
+
+
+-- Selects all employees whose job_id is in the list of job_ids for employees with salaries 5000, 1000, 2000, 3000, or 6000
+SELECT *
+FROM employees
+WHERE job_id IN (SELECT job_id
+                 FROM employees
+                 WHERE salary IN (5000, 1000, 2000, 3000, 6000));
+
+--Why IN is used instead of =: IN is used when you need to match a column against a list of values (which can be multiple), 
+--whereas = is used for comparing a column to a single value.
+
+-- Selects the first name, job_id, and salary of employees whose job_id is in the list of job_ids for employees with salaries 5000, 1000, 2000, 3000, or 6000
+SELECT first_name,
+       job_id,
+       salary
+FROM employees
+WHERE job_id IN (SELECT job_id
+                 FROM employees
+                 WHERE salary IN (5000, 1000, 2000, 3000, 6000));
+
+
+-- Selects all employees who work in the same department as an employee named 'David'
+SELECT *
+FROM employees
+WHERE department_id IN (SELECT department_id
+                        FROM employees
+                        WHERE first_name = 'David');
+
