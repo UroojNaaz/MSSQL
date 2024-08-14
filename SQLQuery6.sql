@@ -90,17 +90,18 @@ from employees
 group by department_id) and department_id= 80);
 
 ---------------------------JOIN----------------------------------
---cross join:
+--cross join: jb use hoga jb column same nhe hun gy 2 ya 2 sy zyda table ma 
+select * from regions
+select * from locations 
+
 select * from 
 locations 
 cross join
 regions
 
---inner join:
-select * from 
-employees
-
 --inner join 
+select * from 
+employees inner join 
 jobs 
 on employees.job_id = jobs.job_id
 
@@ -110,7 +111,19 @@ m.first_name as "Manager"
 from employees as e join employees as m on e.manager_id = m.employee_id;
 
 
---outer join
+--outer join: 
+--full outer join: 
 select *
 from employees as e full outer join departments as d
+on e.department_id=d.department_id;
+
+--left outer join: 
+select *
+from employees as e left outer join departments as d
+on e.department_id=d.department_id;
+
+
+--right outer join: 
+select *
+from employees as e right outer join departments as d
 on e.department_id=d.department_id;
