@@ -411,3 +411,171 @@ on j.job_id=e.job_id
 
 inner join locations as l
 on l.location_id=d.location_id;
+
+
+-------------------------------------------------LIKE,WHERE,IN,ON-----------------------------------------------
+
+--60) Retrieve the names of countries in Region 1.
+
+select * from regions
+select country_name ,region_id from countries
+WHERE  region_id=1 
+
+--61) Find the departments located in cities starting with 'N'.
+
+select * from countries
+select * from  locations
+select * from  departments
+
+select d.*,
+l.city,
+c.country_name
+from 
+departments as d inner join
+locations as l
+on l.location_id= d.location_id
+inner join countries as c
+on l.country_id= c.country_id
+WHERE city LIKE 'N%';
+
+
+--62) Select employees who work in departments managed by employees with a commission percentage greater than 0.15.
+
+select e.first_name +' '+ e.last_name as "Employee Name" ,
+e.commission_pct
+from employees as e
+WHERE e.commission_pct > 0.15
+
+--63) Get the job titles of employees who are managers.
+select * from jobs 
+select * from employees
+
+select 
+j.job_title,
+m.first_name +' '+ m.last_name as "Manager Name"
+from employees as e 
+join employees as m 
+on e.employee_id = m.manager_id
+inner join jobs as j
+on m.job_id = j.job_id;
+
+--64) Retrieve the postal codes of locations where the country's region name is 'Asia'.
+select * from locations
+select * from regions
+select * from countries
+
+select c.country_name,
+r.*,
+l.postal_code from
+locations as l
+inner join countries as c
+on l.country_id= c.country_id
+inner join regions as r
+on c.region_id = r.region_id
+WHERE region_name = 'Asia';
+
+
+--65) Select the names of departments that have employees with commission percentages less than the average commission percentage across all departments.
+
+select * from employees
+select * from departments
+
+select d.department_name,
+e.first_name +' '+ e.last_name as "Employee Name",
+e.commission_pct
+from employees as e
+inner join departments as d
+on d.department_id=e.department_id
+where e.commission_pct < ( select
+avg (commission_pct) from
+employees) 
+
+--66) Retrieve the job titles of employees whose salary is higher than the average salary of employees in the same department.
+
+select j.job_title,
+e.first_name +' '+ e.last_name as "Employee Name",
+e.salary
+from employees as e
+inner join jobs as j
+on j.job_id=e.job_id
+where e.salary > ( select
+avg (salary) from
+employees) 
+
+--67) Find the IDs of employees who have not been assigned to any department.
+
+SELECT 
+e.employee_id,
+e.first_name + ' ' + e.last_name as "Employee Name",
+d.department_name
+FROM employees e
+LEFT JOIN 
+departments d 
+ON e.department_id = d.department_id
+WHERE e.department_id IS NULL;
+
+
+-------------------------------------------------AGGREGATE FUNCTIONS, GROUPBY, HAVING------------------------------------------------------
+
+--68) Get the names of employees who have held more than one job position (multiple entries in the job history table).
+select * from job_history
+
+SELECT 
+    e.first_name + ' ' + e.last_name AS "Employee Name",
+    COUNT(jh.job_id) AS "Number of Positions Held"
+FROM 
+    employees e
+INNER JOIN 
+    job_history jh 
+ON 
+    e.employee_id = jh.employee_id
+GROUP BY 
+    e.first_name, e.last_name
+HAVING 
+    COUNT(jh.job_id) > 1;
+
+--69) Retrieve the count of employees in each department.
+
+SELECT d.department_name,
+count(e.employee_id) as 'No. of employees'
+FROM employees e
+inner join departments as d
+on e.department_id=d.department_id
+group by department_name;
+
+--70) Find the total salary for each job title.
+
+
+select sum(e.salary) as 'Total Salary',
+j.job_title
+from
+jobs as j
+inner join employees as e
+on e.job_id =j.job_id
+group by job_title
+
+--71) Get the average commission percentage for each department.
+
+select d.department_name,
+avg(commission_pct)* 100  as 'commission_%age'
+from employees as e
+inner join departments as d
+on e.department_id=d.department_id
+group by department_name
+
+--Note: Sales department with an average commission percentage of 0.225000 represents the value in its decimal form, which is equivalent to 22.5%.
+
+select d.department_name,
+avg(commission_pct)* 100  as 'commission_%age'  --Here i multiply the avg(commission_pct) by 100 to get 22.5%
+from employees as e
+inner join departments as d
+on e.department_id=d.department_id
+group by department_name
+
+
+--72) Retrieve the maximum salary in each country.
+--Write a query in
+--SQL to display those employees who contain a letter z to their first name and
+--also display their last name, department, city, and state province.
+
+
