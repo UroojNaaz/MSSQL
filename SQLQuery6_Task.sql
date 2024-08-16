@@ -574,8 +574,145 @@ group by department_name
 
 
 --72) Retrieve the maximum salary in each country.
---Write a query in
---SQL to display those employees who contain a letter z to their first name and
+select * from countries
+select * from jobs
+select * from employees
+
+--first method
+select 
+max (e.salary) as 'Max_Salary',
+c.country_name
+from countries as c
+cross join jobs as j
+inner join employees as e
+on e.job_id =j.job_id
+group by country_name
+
+--2nd method
+select 
+max (j.max_salary) as 'Max_Salary',
+c.country_name
+from countries as c
+cross join jobs as j
+group by country_name
+
+
+--73)Write a query in SQL to display those employees who contain a letter z to their first name and
 --also display their last name, department, city, and state province.
+select * from employees
+select * from  departments
+select * from locations
+
+select e.first_name +' '+ e.last_name as Full_name,
+e.last_name,
+d.department_name,
+l.city,
+l.state_province
+from employees as e
+inner join departments as d
+on d.department_id=e.department_id
+inner join locations as l
+on d.location_id =l.location_id
+where first_name like '%z%'
+
+--74) Write a query in SQL to display the job title, department name, full name (first and last name) of the employee,
+--and starting date for all the jobs that started on or after 1st January 1993 and ending with on or before 31 August 1997.
+select * from jobs
+select * from employees
+select * from  departments
+select * from job_history
+
+select e.first_name +' '+ e.last_name as Full_name,
+d.department_name,
+j.job_title,
+jh.start_date, jh.end_date
+from employees as e
+inner join departments as d
+on d.department_id=e.department_id
+inner join jobs as j
+on j.job_id =e.job_id
+inner join job_history as jh
+on jh.job_id = e.job_id
+where jh.start_date > '1993-01-01' and  jh.end_date <'1997-08-31'
+
+--75) Write a query in SQL to display the country name, city, and number of those departments where at least 2 employees are working.
+select * from countries
+select * from  departments
+select * from locations
+
+select c.country_name,
+l.city,
+d.department_name,
+count(e.employee_id) as 'count of emp'
+from employees as e
+inner join departments as d
+on d.department_id=e.department_id
+inner join locations as l
+on d.location_id=l.location_id
+inner join countries as c
+on c.country_id=l.country_id
+group by department_name,c.country_name,l.city
+having count(e.employee_id) >= 2
+
+
+-- 76) Write a query in SQL to display full name (first and last name), job title, and starting and ending
+--date of last jobs for those employees with worked without a commission percentage.
+
+select * from employees
+select * from jobs
+select * from job_history
+
+select e.first_name +' '+ e.last_name as Full_name,
+j.job_title,
+jh.start_date, jh.end_date,
+e.commission_pct
+from employees as e
+inner join jobs as j
+on j.job_id =e.job_id
+inner join job_history as jh
+on jh.employee_id =e.employee_id
+where e.commission_pct is null
+
+--77) Write a query in SQL to display the full name (first and last name) of the employee with ID and name of
+--the country presently where (s)he is working.
+
+select e.first_name +' '+ e.last_name as Full_name,
+e.employee_id,
+c.country_name
+from employees as e
+cross join countries as c
+
+--78) Write a query to display the name (first name and last name), salary, and department ID for those
+--employees who earn such an amount of salary which is the smallest salary of any of the departments.
+
+select e.first_name +' '+ e.last_name as Full_name,
+e.salary as 'min_dep_salary',
+e.department_id
+from employees as e
+inner join jobs as j
+on j.job_id = e.job_id
+where e.salary <= j.min_salary
+
+--79) Write a query to display all the information for those employees whose id is any id who earn the third highest salary.
+
+SELECT 
+    e.first_name + ' ' + e.last_name AS Full_name,
+    e.salary AS '3rd Highest salary',
+    j.job_title
+FROM 
+    employees AS e
+INNER JOIN 
+    jobs AS j 
+	ON j.job_id = e.job_id
+WHERE 
+    e.salary = (
+        SELECT TOP 1 salary
+        FROM (
+            SELECT DISTINCT TOP 3 salary
+            FROM employees
+            ORDER BY salary DESC
+        ) AS ThirdHighest
+        ORDER BY salary ASC
+    );
 
 
