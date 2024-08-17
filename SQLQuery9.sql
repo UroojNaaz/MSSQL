@@ -225,26 +225,26 @@ EXEC sp_rename 'MY_School', 'Uroojs_School','database';
 
 -- BREAKING RELATION B/W KEYS 
 
-	alter table Employees 
-	drop constraint[PK__Employee__2623598B896F30FD]
+alter table Employees 
+drop constraint[PK__Employee__2623598B896F30FD]
 	
-	alter table Student
-	drop constraint[FK__Student__CR__300424B4]
+alter table Student
+drop constraint[FK__Student__CR__300424B4]
 
-	alter table Student
-	drop constraint [FK__Student__TID__2F10007B]
+alter table Student
+drop constraint [FK__Student__TID__2F10007B]
 
-	alter table Student 
-	drop constraint [PK__Student__3214EC27015C8A14]
+alter table Student 
+drop constraint [PK__Student__3214EC27015C8A14]
 
-	alter table Employees
-	drop constraint [FK__Employees__Emp_T__267ABA7A]
+alter table Employees
+drop constraint [FK__Employees__Emp_T__267ABA7A]
 
-	alter table Employees 
-   drop constraint [PK__Employee__2623598B896F30FD]
+alter table Employees 
+drop constraint [PK__Employee__2623598B896F30FD]
    
-   alter table Employees 
-   drop constraint [UQ__Employee__54DFB5F42470396F]
+alter table Employees 
+drop constraint [UQ__Employee__54DFB5F42470396F]
 
-   alter table profession
-   drop constraint [PK__Employee__3ECEBBA2C543D00C]
+alter table profession
+drop constraint [PK__Employee__3ECEBBA2C543D00C]
