@@ -81,20 +81,46 @@ select * from  EmployeeJobHistoryView
 --6) Design a view named RecentHires that includes employee_id, first_name, last_name, 
 --and hire_date for employees hired in the last 6 months.
 
+create view RecentHires
+as
+    select employee_id, first_name,last_name,hire_date
+    from employees
+    where hire_date >= DATEADD(MONTH,-6,GETDATE())
 
---7) Create a view EmployeeDepartmentJobCount that shows department_name, job_title, and the count of employees in each job title per department.
+select * from RecentHires
+  
+--7) Create a view EmployeeDepartmentJobCount that shows department_name, job_title, and 
+--the count of employees in each job title per department.
 
 
 
---8) Create a view named EmployeeSalaryComparison that includes employee_id, first_name, last_name, and salary, along with a calculated column that indicates whether their salary is above or below the average salary for their job title.
+--8) Create a view named EmployeeSalaryComparison that includes employee_id, first_name, 
+--last_name, and salary, along with a calculated column that indicates whether their salary 
+--is above or below the average salary for their job title.
+
+ create view EmployeeSalaryComparison
+ as
+    select e.employee_id,e.first_name,e.last_name,e.salary,j.Average,
+    CASE
+        when j.Average = e.salary then 'Equal'
+        When j.Average<e.salary then 'High'
+        else 'Below'
+    END as "Compare with Average Salary"
+    from employees e inner join (select job_id,avg(salary) as "Average"
+    from employees
+    group by job_id)j
+    on j.job_id = e.job_id
+
+select * from EmployeeSalaryComparison
+
+--9) Design a view CountryCities that shows country_name and a list of city names, where
+--cities are grouped by their country.
 
 
 
---9) Design a view CountryCities that shows country_name and a list of city names, where cities are grouped by their country.
-
-
-
---10) Create a view named EmployeeSalaryGrade that classifies employees into salary grades based on salary ranges (e.g., 'Low', 'Medium', 'High') and includes employee_id, first_name, last_name, and salary_grade.
+--10) Create a view named EmployeeSalaryGrade that classifies employees into salary grades 
+--based on salary ranges (e.g., 'Low', 'Medium', 'High') and includes employee_id, first_name,
+--last_name, and salary_grade.
 
 
 
