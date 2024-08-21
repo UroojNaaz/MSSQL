@@ -1,4 +1,4 @@
------------------------------------------------------MSSQL USER DEFINED FUNCTIONS-----------------------------------------------------
+------------------------------------------------------MSSQL USER DEFINED FUNCTIONS------------------------------------------------------
 
 --User-Defined Functions:
 --Definition: These functions return a single value of any data type.In MSSQL, User-Defined Functions (UDFs) are functions created by 
@@ -75,7 +75,7 @@ SELECT
     dbo.Multiply_num(8, 9) AS "Multiplication",
     dbo.Divide_num(8, 9) AS "Division";
 
--------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
 
 -- Function for Calculator:
 
@@ -128,4 +128,25 @@ SELECT dbo.calculator(10, 5, '/') AS Result;  -- Output: 2.00
 -- Modulus
 SELECT dbo.calculator(10, 5, '%') AS Result;  -- Output: 0.00
 
+--------------------------------------------------------TABLE BASED FUNCTIONS---------------------------------------------------------
+
+--Create a Table based function named GetByJobID that returns the first name, last name, email, job id, salary for a given job_id from 
+--the jobs table.
+
+ALTER FUNCTION GetByJobID(@J_id VARCHAR(20))
+RETURNS TABLE
+AS
+RETURN 
+(
+    SELECT first_name, last_name, email, job_id, salary
+    FROM employees
+    WHERE job_id = @J_id
+);
+-- Query to select job_id from jobs
+SELECT job_id 
+FROM jobs;
+
+-- Query to use the function and get employees with job_id 'FI_MGR'
+SELECT first_name, salary 
+FROM dbo.GetByJobID('FI_MGR');
 
