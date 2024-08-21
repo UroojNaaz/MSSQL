@@ -133,7 +133,8 @@ SELECT dbo.calculator(10, 5, '%') AS Result;  -- Output: 0.00
 --Create a Table based function named GetByJobID that returns the first name, last name, email, job id, salary for a given job_id from 
 --the jobs table.
 
-ALTER FUNCTION GetByJobID(@J_id VARCHAR(20))
+--Create Function for GetByJobID:
+CREATE FUNCTION GetByJobID(@J_id VARCHAR(20))
 RETURNS TABLE
 AS
 RETURN 
@@ -142,11 +143,14 @@ RETURN
     FROM employees
     WHERE job_id = @J_id
 );
--- Query to select job_id from jobs
+
+-- Select job_id from jobs
 SELECT job_id 
 FROM jobs;
 
--- Query to use the function and get employees with job_id 'FI_MGR'
-SELECT first_name, salary 
+-- Use the function and get employees with job_id 'FI_MGR'
+SELECT *
 FROM dbo.GetByJobID('FI_MGR');
 
+SELECT first_name, salary 
+FROM dbo.GetByJobID('FI_MGR');
