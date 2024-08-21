@@ -2,10 +2,31 @@
 
 1) Create a scalar function named GetJobTitle that returns the job_title for a given job_id from the jobs table.
 
+CREATE FUNCTION GetJobTitle(
+@JID varchar(15)
+)
+RETURNS varchar(100)
+AS
+BEGIN 
+RETURN (SELECT job_title FROM jobs WHERE job_id = @JID)
+END
 
+SELECT dbo.GetJobTitle('AD_ASST') AS 'JOB_TITLE';
+  
 2) Develop a scalar function called FormatPostalCode that takes a postal_code as input and formats it as 12345-6789 if the input is 123456789.
 
+CREATE FUNCTION FormatPostalCode (
+@POSTAL_C VARCHAR(20) )
+RETURNS VARCHAR(20)
+AS
+BEGIN 
+DECLARE @RESULT VARCHAR(20)
+SET @RESULT= STUFF (@POSTAL_C ,6,0,'-')
+RETURN  @RESULT
+END
 
+SELECT dbo.FormatPostalCode ('123456789')
+  
 3) Write a scalar function named IsHighSalary that takes an employee_id and returns 'Yes' if the employee's salary is greater than $100,000, and 'No' otherwise.
 
 
